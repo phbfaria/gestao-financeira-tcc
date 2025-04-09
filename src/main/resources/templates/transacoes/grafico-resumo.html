@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gráfico Resumo por Categoria</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        nav {
+            background-color: #004d00;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            margin-right: 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a th:href="@{/contas}">Contas</a>
+    <a th:href="@{/transacoes}">Transações</a>
+    <a th:href="@{/transacoes/grafico}">Gráfico</a>
+    <a th:href="@{/transacoes/grafico-resumo}">Gráfico Resumo</a>
+    <a th:href="@{/fluxo-caixa}">Extrato</a>
+</nav>
+<h1>Gráfico por Categoria</h1>
+<canvas id="graficoResumo"></canvas>
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var categorias = [[${categoriasJson}]];
+    var valores = [[${valoresJson}]];
+    new Chart(document.getElementById('graficoResumo'), {
+        type: 'pie',
+        data: {
+            labels: categorias,
+            datasets: [{
+                label: 'Valores por Categoria',
+                data: valores,
+                backgroundColor: ['#006400', '#00a86b', '#90ee90', '#556b2f', '#228b22']
+            }]
+        }
+    });
+/*]]>*/
+</script>
+</body>
+</html>

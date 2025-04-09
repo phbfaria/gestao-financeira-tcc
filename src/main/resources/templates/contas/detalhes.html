@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Conta</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; }
+        header { background-color: #003366; color: white; padding: 1rem; text-align: center; }
+        nav { background-color: #2e7d32; padding: 0.5rem; text-align: center; }
+        nav a { color: white; margin: 0 1rem; text-decoration: none; font-weight: bold; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 1rem; }
+        form label { display: block; margin-top: 1rem; }
+        form input { width: 100%; padding: 0.5rem; margin-top: 0.25rem; }
+        button { margin-top: 1rem; padding: 0.5rem 1rem; }
+        a { display: inline-block; margin-top: 1rem; color: #2e7d32; text-decoration: none; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Gestão Financeira Pessoal</h1>
+</header>
+<nav>
+    <a href="/contas">Contas</a>
+    <a href="/transacoes">Transações</a>
+    <a href="/transacoes/grafico">Gráfico</a>
+    <a href="/fluxo-caixa">Fluxo de Caixa</a>
+</nav>
+
+<div class="container">
+    
+<h2>Detalhes da Conta</h2>
+<p><strong>Nome:</strong> <span th:text="${conta.nome}"></span></p>
+<p><strong>Descrição:</strong> <span th:text="${conta.descricao}"></span></p>
+<p><strong>Saldo:</strong> R$ <span th:text="${conta.saldo}"></span></p>
+<a href="/contas">Voltar para lista</a>
+
+</div>
+
+</body>
+</html>

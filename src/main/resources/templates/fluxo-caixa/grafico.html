@@ -1,0 +1,79 @@
+<html><head>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f5f5f5; }
+  main { padding: 20px; max-width: 1200px; margin: auto; background-color: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+  h2 { color: #2e8b57; }
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+  th { background-color: #2e8b57; color: white; }
+  a.button, button { background-color: #2e8b57; color: white; padding: 10px 20px; border: none; border-radius: 5px; text-decoration: none; cursor: pointer; }
+</style>
+</head><body>
+<header style="background-color: #003366; padding: 20px; text-align: center; color: white;">
+  <h1>Gestão Financeira Pessoal</h1>
+</header>
+
+<nav style="background-color: #2e8b57; padding: 10px; display: flex; justify-content: center; gap: 30px;">
+  <a href='/contas' style='color: white; text-decoration: none; font-weight: bold;'>Contas</a>
+  <a href='/transacoes' style='color: white; text-decoration: none; font-weight: bold;'>Transações</a>
+  <a href='/transacoes/grafico' style='color: white; text-decoration: none; font-weight: bold;'>Gráfico</a>
+  <a href='/fluxo-caixa' style='color: white; text-decoration: none; font-weight: bold;'>Fluxo de Caixa</a>
+</nav>
+<main><main layout:fragment="content" class="container mt-4">
+    <h2 class="text-center mb-4">Gráfico de Receitas e Despesas por Mês</h2>
+
+    <form method="get" th:action="@{/grafico}" class="row g-3 mb-4">
+        <div class="col-md-4 offset-md-4">
+            <label for="ano" class="form-label">Ano:</label>
+            <input type="number" class="form-control" id="ano" name="ano" th:value="${ano}" min="2000" max="2100">
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-success w-100">Gerar Gráfico</button>
+        </div>
+    </form>
+
+    <canvas id="graficoFluxo" width="600" height="400" class="mb-4"></canvas>
+
+    <form method="get" th:action="@{/grafico/exportar}" class="text-center mb-3">
+        <input type="hidden" name="ano" th:value="${ano}">
+        <button type="submit" class="btn btn-primary">Exportar PDF</button>
+    </form>
+
+    <div class="text-center">
+        <a th:href="@{/fluxo-caixa}" class="btn btn-secondary">Voltar</a>
+    </div>
+</main>
+
+<script th:inline="javascript">
+    const meses = [[${mesesJson}]];
+    const receitas = [[${receitasJson}]];
+    const despesas = [[${despesasJson}]];
+
+    const ctx = document.getElementById('graficoFluxo').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: meses,
+            datasets: [
+                {
+                    label: 'Receitas',
+                    data: receitas,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                },
+                {
+                    label: 'Despesas',
+                    data: despesas,
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script></main></body></html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Conta</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Gestão Financeira Pessoal</h1>
+</header>
+
+<nav>
+    <a th:href="@{/contas}">Contas</a>
+    <a th:href="@{/transacoes}">Transações</a>
+    <a th:href="@{/transacoes/grafico}">Gráfico</a>
+    <a th:href="@{/transacoes/fluxo}">Fluxo de Caixa</a>
+</nav>
+
+<div class="container">
+    <h2>Editar Conta</h2>
+    <form th:action="@{/contas/salvar}" th:object="${conta}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="form-group">
+            <label for="nome">Nome da Conta:</label>
+            <input type="text" th:field="*{nome}" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="saldo">Saldo Inicial:</label>
+            <input type="number" th:field="*{saldo}" step="0.01" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="dataSaldoInicial">Data do Saldo Inicial:</label>
+            <input type="date" th:field="*{dataSaldoInicial}" class="form-control" required />
+        </div>
+
+        <br>
+        <button type="submit" class="btn btn-primary">Atualizar</button>
+    </form>
+</div>
+
+</body>
+</html>

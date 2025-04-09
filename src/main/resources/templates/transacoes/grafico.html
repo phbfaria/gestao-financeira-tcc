@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gráfico Financeiro</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+             margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f6f4;
+        }
+        header {
+           background-color: #ffffff;
+            color: #1b4332;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        nav {
+            background-color: #2e7d32;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 15px 0;
+        }
+        nav a {
+        	color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        canvas {
+            max-width: 100%;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="date"] {
+            padding: 8px;
+            margin: 0 10px 0 5px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        footer {
+            background: #212121;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<header>Gestão Financeira Pessoal</header>
+
+<nav>
+    <a th:href="@{/contas}">Contas</a>
+    <a th:href="@{/transacoes}">Transações</a>
+    <a th:href="@{/transacoes/grafico}">Gráfico</a>
+    <a th:href="@{/fluxo-caixa}">Fluxo de Caixa</a>
+</nav>
+
+<div class="container">
+    <h2>Receitas x Despesas por Mês</h2>
+
+    <form method="get" th:action="@{/transacoes/grafico}">
+        <label>Data Inicial:</label>
+        <input type="date" name="inicio" th:value="${inicio}">
+        <label>Data Final:</label>
+        <input type="date" name="fim" th:value="${fim}">
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <canvas id="graficoFinanceiro"></canvas>
+</div>
+
+<footer>
+    © 2025 - Sistema de Gestão Financeira
+</footer>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+const dados = /*[[${dadosGrafico}]]*/ {};
+const labels = Object.keys(dados);
+const receitas = labels.map(key => dados[key][0]);
+const despesas = labels.map(key => dados[key][1]);
+
+const ctx = document.getElementById('graficoFinanceiro').getContext('2d');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Receitas',
+                backgroundColor: 'rgba(76, 175, 80, 0.7)',
+                data: receitas
+            },
+            {
+                label: 'Despesas',
+                backgroundColor: 'rgba(244, 67, 54, 0.7)',
+                data: despesas
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' },
+            title: { display: true, text: 'Gráfico Mensal de Receitas e Despesas' }
+        }
+    }
+});
+/*]]>*/
+</script>
+
+</body>
+</html>

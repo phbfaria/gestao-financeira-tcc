@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Transações</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f6f4;
+        }
+
+        header {
+            background-color: #ffffff;
+            color: #1b4332;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        nav {
+            background-color: #2e7d32;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 15px 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2e7d32;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #c5d5b4;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            margin: 2px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #27632a;
+        }
+
+        .footer {
+            background-color: #212121;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    Gestão Financeira Pessoal
+</header>
+
+<nav>
+    <a th:href="@{/contas}">Contas</a>
+    <a th:href="@{/transacoes}">Transações</a>
+    <a th:href="@{/transacoes/grafico}">Gráfico</a>
+    <a th:href="@{/fluxo-caixa}">Fluxo de Caixa</a>
+</nav>
+
+<div class="container">
+    <h2>Transações</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Conta</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Data</th>
+                <th>Categoria</th>
+                <th>Tipo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="transacao : ${transacoes}">
+                <td th:text="${transacao.id}"></td>
+                <td th:text="${transacao.conta != null ? transacao.conta.nome : 'Conta não definida'}"></td>
+                <td th:text="${transacao.descricao}"></td>
+                <td th:text="${transacao.valor}"></td>
+                <td th:text="${#temporals.format(transacao.data, 'dd/MM/yyyy')}"></td>
+                <td th:text="${transacao.categoria}"></td>
+                <td th:text="${transacao.tipo}"></td>
+                <td>
+                    <a th:href="@{'/transacoes/editar/' + ${transacao.id}}" class="btn">Editar</a>
+                    <a th:href="@{'/transacoes/excluir/' + ${transacao.id}}" class="btn"
+                       onclick="return confirm('Tem certeza que deseja excluir esta transação?')">Excluir</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a th:href="@{/transacoes/nova}" class="btn">Nova Transação</a>
+</div>
+
+<div class="footer">
+    © 2025 - Sistema de Gestão Financeira
+</div>
+
+</body>
+</html>

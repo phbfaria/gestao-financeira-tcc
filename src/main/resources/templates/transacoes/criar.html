@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; background-color: #f9f9f9; }
+        header { background-color: #002b45; color: white; padding: 1em; text-align: center; }
+        nav { background-color: #2e7d32; padding: 1em; display: flex; gap: 1em; justify-content: center; flex-wrap: wrap; }
+        nav a { color: white; text-decoration: none; font-weight: bold; }
+        main { max-width: 800px; margin: 2em auto; background: white; padding: 2em; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        form > label { display: block; margin-top: 1em; }
+        form > input, form > select { width: 100%; padding: 0.5em; margin-top: 0.5em; }
+        button { margin-top: 1em; padding: 0.75em 1.5em; background-color: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        a.voltar { display: inline-block; margin-top: 1em; color: #2e7d32; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Gestão Financeira Pessoal</h1>
+</header>
+<nav>
+    <a href="/contas">Contas</a>
+    <a href="/transacoes">Transações</a>
+    <a href="/transacoes/grafico">Gráfico</a>
+    <a href="/fluxo-caixa">Fluxo de Caixa</a>
+</nav>
+<main>
+<div>
+    <h2>Criar Nova Transação</h2>
+    <form action="/transacoes/salvar" method="post" th:object="${transacao}">
+        <label>Descrição:</label>
+        <input type="text" th:field="*{descricao}" required>
+        <label>Valor:</label>
+        <input type="number" step="0.01" th:field="*{valor}" required>
+        <label>Data:</label>
+        <input type="date" th:field="*{data}" required>
+        <label>Conta:</label>
+        <select th:field="*{conta}" required>
+            <option th:each="conta : ${contas}" th:value="${conta.id}" th:text="${conta.nome}"></option>
+        </select>
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="/transacoes">Voltar</a>
+</div>
+</main>
+</body>
+</html>

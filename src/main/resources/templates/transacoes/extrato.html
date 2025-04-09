@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Extrato</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; background-color: #f9f9f9; }
+        header { background-color: #002b45; color: white; padding: 1em; text-align: center; }
+        nav { background-color: #2e7d32; padding: 1em; display: flex; gap: 1em; justify-content: center; flex-wrap: wrap; }
+        nav a { color: white; text-decoration: none; font-weight: bold; }
+        main { max-width: 800px; margin: 2em auto; background: white; padding: 2em; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        form > label { display: block; margin-top: 1em; }
+        form > input, form > select { width: 100%; padding: 0.5em; margin-top: 0.5em; }
+        button { margin-top: 1em; padding: 0.75em 1.5em; background-color: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        a.voltar { display: inline-block; margin-top: 1em; color: #2e7d32; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Gestão Financeira Pessoal</h1>
+</header>
+<nav>
+    <a href="/contas">Contas</a>
+    <a href="/transacoes">Transações</a>
+    <a href="/transacoes/grafico">Gráfico</a>
+    <a href="/fluxo-caixa">Fluxo de Caixa</a>
+</nav>
+<main>
+<div class="container">
+    <div class="nav-menu">
+        <a th:href="@{/contas}">Contas</a>
+        <a th:href="@{/transacoes}">Transações</a>
+        <a th:href="@{/transacoes/grafico}">Gráfico</a>
+        <a th:href="@{/transacoes/extrato}">Extrato</a>
+    </div>
+    <h1>Extrato de Transações</h1>
+
+    <form method="post" th:action="@{/transacoes/extrato}">
+        <label>Data Início:</label>
+        <input type="date" name="inicio" required>
+        <label>Data Fim:</label>
+        <input type="date" name="fim" required>
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <div th:if="${transacoes}">
+        <h3 th:text="'Período: ' + ${inicio} + ' até ' + ${fim}"></h3>
+
+        <form method="get" th:action="@{/transacoes/extrato/pdf}">
+            <input type="hidden" name="inicio" th:value="${inicio}">
+            <input type="hidden" name="fim" th:value="${fim}">
+            <button type="submit">Exportar em PDF</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                    <th>Categoria</th>
+                    <th>Conta</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="t : ${transacoes}">
+                    <td th:text="${t.descricao}"></td>
+                    <td th:text="${#numbers.formatDecimal(t.valor, 1, 2)}"></td>
+                    <td th:text="${t.data}"></td>
+                    <td th:text="${t.categoria}"></td>
+                    <td th:text="${t.conta.nome}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</main>
+</body>
+</html>
